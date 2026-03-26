@@ -1,0 +1,94 @@
+import pandas as pd
+
+
+def load_data(file_path):
+    return pd.read_csv(file_path)
+
+
+def inspect_data(df):
+    print("Initial DataFrame shape:", df.shape)
+    print("\nDataFrame info:")
+    print(df.info())
+    print("\nDataFrame head:\n", df.head())
+
+
+def clean_data(df, min_user_interactions=3, min_product_interactions=3):
+
+    df = df.copy()
+
+    df.rename(columns={
+        "User's ID": "UserID",
+        "ProdID": "ProductID",
+        "Review Count": "ReviewCount"
+    }, inplace=True)
+
+    df["UserID"] = pd.to_numeric(df["UserID"], errors="coerce")
+    df["ProductID"] = pd.to_numeric(df["ProductID"], errors="coerce")
+
+    df = df[~df["UserID"].isin([0, -2147483648])]
+    df = df[~df["ProductID"].isin([0, -2147483648])]
+
+    df.dropna(subset=["UserID", "ProductID"], inplace=True)
+
+    df["Rating"] = pd.to_numeric(df["Rating"], errors="coerce")
+    df["ReviewCount"] = pd.to_numeric(df["ReviewCount"], errors="coerce")
+
+    df.dropna(subset=["Rating", "ReviewCount"], inplace=True)
+
+    df["Rating"] = df["Rating"].astype(float)
+    df["ReviewCount"] = df["ReviewCount"].astype(int)
+
+    df["Category"] = df["Category"].fillna(df["Tags"])
+    df["Tags"] = df["Tags"].fillna(df["Category"])
+    df["Brand"] = df["Brand"].fillna("Unknown")
+
+    df.dropna(subset=["Name"], inplace=True)
+
+    df["Description"] = df["Description"].fillna("")
+    df["Tags"] = df["Tags"].fillna("")
+
+    # 🔥 IMAGE FIX (IMPORTANT)
+    if 'ImageURL' in df.columns:
+        df['ImageURL'] = df['ImageURL'].fillna("").astype(str)
+        df['ImageURL'] = df['ImageURL'].str.split('|').str[0].str.strip()
+
+        # remove invalid images
+        df.loc[~df['ImageURL'].str.startswith("http"), 'ImageURL'] = ""
+
+    df.drop_duplicates(inplace=True)
+
+    df = df[df["Rating"] != 0]
+
+    df["Category"] = df["Category"].str.lower().str.replace(r"[^\w\s,]", "", regex=True).str.strip()
+    df["Tags"] = df["Tags"].str.lower().str.replace(r"[^\w\s,]", "", regex=True).str.strip()
+    df["Brand"] = df["Brand"].str.lower().str.replace(r"[^\w\s]", "", regex=True).str.strip()
+    df["Name"] = df["Name"].str.lower().str.replace(r"[^\w\s]", "", regex=True).str.strip()
+    df["Description"] = df["Description"].str.lower().str.replace(r"[^\w\s]", "", regex=True).str.strip()
+
+    # 🔥 FILTER LOOP
+    while True:
+        user_counts = df["UserID"].value_counts()
+        product_counts = df["ProductID"].value_counts()
+
+        low_users = user_counts[user_counts < min_user_interactions].index
+        low_products = product_counts[product_counts < min_product_interactions].index
+
+        if len(low_users) == 0 and len(low_products) == 0:
+            break
+
+        df = df[~df["UserID"].isin(low_users)]
+        df = df[~df["ProductID"].isin(low_products)]
+
+    df.reset_index(drop=True, inplace=True)
+
+    return df
+
+
+if __name__ == "__main__":
+    df = load_data("clean_data.csv")   # original file
+
+    df = clean_data(df)
+
+    df.to_csv("final_clean_data.csv", index=False)  # ✅ new file
+
+    print("✅ Cleaned data saved as final_clean_data.csv")

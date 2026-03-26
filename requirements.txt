@@ -1,0 +1,9 @@
+pandas
+numpy
+scikit-learn
+streamlit
+reflex
+reflex==0.8.27
+langchain-core
+langchain-groq
+dotenv
