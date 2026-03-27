@@ -139,8 +139,7 @@ http://localhost:3000
 
 ## 🎥 Demo Video
 
-*Add your demo video link here*
-
+[![Watch Demo](https://img.icons8.com/color/96/video.png)](https://drive.google.com/file/d/1aEN8uKSxQhRzK9iUCS8SqIPO6qzBSs7H/preview)
 ---
 
 ## 💡 Future Improvements
