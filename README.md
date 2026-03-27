@@ -152,7 +152,7 @@ http://localhost:3000
 * 💳 Real Payment Integration (Razorpay/Stripe)
 * 🌐 Deployment (Render/Vercel/Azure)
 * 📱 Mobile Responsive UI
-* 🗄️ Database Integration (PostgreSQL/MongoDB)
+* 🗄️ Voice-based Search
 
 ---
 
