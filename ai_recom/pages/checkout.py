@@ -1,7 +1,6 @@
 import reflex as rx
 from ai_recom.components.navbar import navbar
 
-
 @rx.page(route="/checkout", title="Checkout")
 def checkout_page() -> rx.Component:
     return rx.box(
@@ -31,13 +30,13 @@ def checkout_page() -> rx.Component:
                             width="100%",
                         ),
 
-                        # ✅ Button navigation (better than link wrapping)
+                        # Button navigation (better than link wrapping)
                         rx.button(
                             "Proceed to Payment",
                             color_scheme="blue",
                             width="100%",
                             margin_top="1rem",
-                            on_click=rx.redirect("/payment")   # ✅ FIX
+                            on_click=rx.redirect("/payment")   
                         ),
 
                         width="100%",
