@@ -82,10 +82,14 @@ ai_recom/
 │   ├── signup.py
 |   |--profile.py
 |   |--products.py
-|   |--config.py
-│
+|  
+│---db.py
+|-- __init__.py
+|---config.py
 │── state.py
 │── ai_recom.py
+|--clean_data.csv
+|--final_clean_data.csv
 ```
 
 ---
