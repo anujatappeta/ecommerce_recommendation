@@ -1,56 +1,59 @@
 import pandas as pd
-#from cleaning_data import load_data, clean_data
-from ai_recom.backend.cleaning_data import load_data, clean_data
-df_raw = load_data("clean_data.csv")
-df = clean_data(df_raw)
-
-product_stats = df.groupby("ProductID").agg({
-    "Rating": "mean",
-    "ReviewCount": "sum",
-    "Name": "first",
-    "Brand": "first"
-}).reset_index()
-
-product_stats.rename(columns={
-    "Rating": "AverageRating",
-    "ReviewCount": "TotalReviews"
-}, inplace=True)
-
-def recommend_top_rated(top_n=10, min_reviews=5):
-
-    filtered = product_stats[product_stats["TotalReviews"] >= min_reviews]
-
-    top_products = filtered.sort_values(
-        by=["AverageRating", "TotalReviews"],
-        ascending=False
-    ).head(top_n)
-
-    return top_products[["Name", "Brand", "AverageRating", "TotalReviews"]]
 
 
-if __name__ == "__main__":
-
-    result = recommend_top_rated(top_n=5)
-
-    print(result)
-
-
-def get_top_rated(top_n=10):
+def recommend_top_rated(top_n=20, min_reviews=5):
     try:
-        result_df = recommend_top_rated(top_n)
+        # 🔥 LOAD ONLY WHEN FUNCTION CALLED
+        df = pd.read_csv("final_clean_data.csv")
 
-        if result_df.empty:
-            return pd.DataFrame()
+        # Basic cleaning
+        df.columns = df.columns.str.strip()
 
-        # 🔥 MERGE WITH ORIGINAL DATA (IMPORTANT)
-        final_df = df.merge(
-            result_df[["Name"]],
-            on="Name",
-            how="inner"
+        if "ProdID" in df.columns:
+            df = df.rename(columns={"ProdID": "ProductID"})
+
+        df = df.dropna(subset=["ProductID", "Rating"])
+
+        df["ProductID"] = pd.to_numeric(df["ProductID"], errors="coerce")
+        df["Rating"] = pd.to_numeric(df["Rating"], errors="coerce")
+
+        if "ReviewCount" not in df.columns:
+            df["ReviewCount"] = 0
+
+        df["ReviewCount"] = pd.to_numeric(
+            df["ReviewCount"], errors="coerce"
+        ).fillna(0)
+
+        # 🔥 GROUP
+        product_stats = (
+            df.groupby("ProductID")
+            .agg({
+                "Rating": "mean",
+                "ReviewCount": "sum"
+            })
+            .reset_index()
         )
 
-        return final_df
+        # 🔥 FILTER
+        filtered = product_stats[
+            product_stats["ReviewCount"] >= min_reviews
+        ]
+
+        if filtered.empty:
+            filtered = product_stats
+
+        # 🔥 SORT
+        top_products = filtered.sort_values(
+            by=["Rating", "ReviewCount"],
+            ascending=False
+        ).head(top_n)
+
+        return top_products["ProductID"].astype(int).tolist()
 
     except Exception as e:
-        print("Error in rating-based:", e)
-        return pd.DataFrame()
+        print("Rating error:", e)
+        return []
+
+
+def get_top_rated(top_n=20):
+    return recommend_top_rated(top_n)

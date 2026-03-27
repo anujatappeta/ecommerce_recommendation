@@ -12,42 +12,37 @@ from ai_recom.pages.payment import payment_page
 from ai_recom.pages.profile import profile_page
 from ai_recom.pages.wishlist import wishlist_page
 from ai_recom.pages.orders import orders_page
-from ai_recom.state import State
 
 app = rx.App()
 
 # Signup
 app.add_page(signup_page, route="/signup")
 
-# Home (FIXED)
+# Home (REMOVE on_load ❌)
 app.add_page(
     home,
-    route="/home",
-    on_load=State.on_load
+    route="/home"
 )
 
 # Login
 app.add_page(
     login_page,
-    route="/",
-    on_load=State.reset_password_toggle
+    route="/"
 )
 
-# Products
+# Products (REMOVE on_load ❌)
 app.add_page(
     products_page,
-    route="/products",
-    on_load=State.load_home_products
+    route="/products"
 )
 
-# Recommendations (FIXED)
+# Recommendations (REMOVE on_load ❌)
 app.add_page(
     recommendations_page,
-    route="/recommendations",
-    on_load=State.on_load
+    route="/recommendations"
 )
 
-# Other pages (no change)
+# Other pages
 app.add_page(cart_page, route="/cart")
 app.add_page(wishlist_page, route="/wishlist")
 app.add_page(orders_page, route="/orders")

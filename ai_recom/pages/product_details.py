@@ -4,13 +4,7 @@ from ai_recom.components.footer import footer
 from ai_recom.state import State
 
 
-class ProductState(rx.State):
-    selected_product: dict = {}
-
-    def set_product(self, product: dict):
-        self.selected_product = product
-
-
+@rx.page(route="/product-details")
 def product_detail_page():
 
     return rx.box(
@@ -20,13 +14,16 @@ def product_detail_page():
         rx.box(
 
             rx.cond(
-                ProductState.selected_product,
+                State.selected_product,   # ✅ FIXED
 
                 rx.hstack(
 
                     # IMAGE
                     rx.image(
-                        src=ProductState.selected_product.get("ImageURL", "https://via.placeholder.com/200"),
+                        src=State.selected_product.get(
+                            "ImageURL",
+                            "https://via.placeholder.com/200"
+                        ),
                         width="300px",
                         height="300px",
                         object_fit="contain",
@@ -38,26 +35,28 @@ def product_detail_page():
                     rx.vstack(
 
                         rx.text(
-                            ProductState.selected_product.get("Name", "No Name"),
+                            State.selected_product.get("Name", "No Name"),
                             font_size="22px",
                             font_weight="bold"
                         ),
 
                         rx.text(
-                            f"₹{ProductState.selected_product.get('Price', 'N/A')}",
+                            f"₹{State.selected_product.get('Price', 'N/A')}",
                             font_size="20px",
                             color="green"
                         ),
 
                         rx.text(
-                            ProductState.selected_product.get("Description", "No description available"),
+                            State.selected_product.get(
+                                "Description",
+                                "No description available"
+                            ),
                             color="gray"
                         ),
 
                         rx.button(
                             "Add to Cart",
-                            on_click=lambda: State.add_to_cart(ProductState.selected_product),
-                            color_scheme="blue",
+                            on_click=lambda: State.add_to_cart(State.selected_product),
                             width="200px"
                         ),
 

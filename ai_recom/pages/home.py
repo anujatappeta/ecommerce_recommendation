@@ -9,10 +9,8 @@ from ai_recom.components.product_card import product_card
 def home():
     return rx.box(
 
-        # 🔝 NAVBAR
         navbar(),
 
-        # 🔥 HERO SECTION
         rx.box(
             rx.vstack(
 
@@ -49,7 +47,7 @@ def home():
             text_align="center"
         ),
 
-        # 🛍️ RECOMMENDATIONS
+        # RECOMMENDATIONS SECTION
         rx.box(
             rx.vstack(
 
@@ -58,6 +56,14 @@ def home():
                     font_size="28px",
                     font_weight="bold",
                     color="#111"
+                ),
+
+                # IMPORTANT BUTTON
+                rx.button(
+                    "Load Recommendations",
+                    on_click=State.get_recommendations,
+                    bg="blue",
+                    color="white"
                 ),
 
                 rx.cond(

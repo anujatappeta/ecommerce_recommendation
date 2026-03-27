@@ -9,7 +9,7 @@ def signup_page():
 
             rx.vstack(
 
-                # 🛍️ TITLE
+                # TITLE
                 rx.text(
                     "Create Account ✨",
                     font_size="32px",
@@ -25,7 +25,7 @@ def signup_page():
 
                 rx.divider(),
 
-                # 👤 NAME
+                # NAME
                 rx.vstack(
                     rx.text("Name", font_weight="bold", color="#111"),
 
@@ -47,7 +47,7 @@ def signup_page():
                     width="100%"
                 ),
 
-                # 📧 EMAIL
+                # EMAIL
                 rx.vstack(
                     rx.text("Email", font_weight="bold", color="#111"),
 
@@ -69,31 +69,28 @@ def signup_page():
                     width="100%"
                 ),
 
-                # 🔐 PASSWORD WITH EYE ICON
+                # PASSWORD (FIXED)
                 rx.vstack(
                     rx.text("Password", font_weight="bold", color="#111"),
 
                     rx.hstack(
 
                         rx.input(
-                            type_=rx.cond(State.show_password, "text", "password"),
                             placeholder="Create a password",
+                            type=rx.cond(State.show_password, "text", "password"),
                             value=State.password,
                             on_change=State.set_password,
 
                             width="100%",
                             height="50px",
                             font_size="15px",
-
                             color="black",
                             bg="white",
-
                             border="1px solid #ccc",
                             border_radius="12px",
                             padding="0 14px"
                         ),
 
-                        # 👁️ EYE ICON BUTTON
                         rx.button(
                             rx.icon(
                                 tag=rx.cond(
@@ -116,7 +113,7 @@ def signup_page():
                     width="100%"
                 ),
 
-                # 🟢 BUTTON
+                # BUTTON
                 rx.button(
                     "Create Account",
                     width="100%",
@@ -133,7 +130,7 @@ def signup_page():
                     on_click=State.signup
                 ),
 
-                # ⚠️ MESSAGE
+                # MESSAGE
                 rx.cond(
                     State.message != "",
                     rx.text(
@@ -144,7 +141,7 @@ def signup_page():
                     )
                 ),
 
-                # 🔗 LOGIN
+                # LOGIN LINK
                 rx.hstack(
                     rx.text("Already have an account?", color="#555"),
                     rx.text(
@@ -162,7 +159,6 @@ def signup_page():
                 width="100%"
             ),
 
-            # 🎨 CARD
             padding="45px",
             bg="white",
             border_radius="22px",
@@ -170,7 +166,6 @@ def signup_page():
             width="420px"
         ),
 
-        # 🌈 BACKGROUND
         bg="linear-gradient(135deg, #0f172a, #1e293b)",
         height="100vh"
     )

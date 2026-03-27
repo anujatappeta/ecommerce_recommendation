@@ -1,177 +1,80 @@
 import reflex as rx
-from ai_recom.state import State
 from ai_recom.components.navbar import navbar
-from ai_recom.components.footer import footer
+from ai_recom.state import State   # ✅ only this
 
-
-def payment_page():
-
+@rx.page(route="/payment", title="Payment")
+def payment_page() -> rx.Component:
     return rx.box(
+        # Razorpay script
+        rx.script(src="https://checkout.razorpay.com/v1/checkout.js"),
 
-        # 🔝 NAVBAR
         navbar(),
 
-        # 🔹 MAIN SECTION
-        rx.box(
+        rx.container(
+            rx.vstack(
+                rx.heading("Order Summary", size="8", margin_top="2rem"),
 
-            rx.hstack(
-
-                # 💳 LEFT SIDE - PAYMENT OPTIONS
-                rx.box(
-
+                # -------- PRICE SUMMARY --------
+                rx.card(
                     rx.vstack(
+                        rx.heading("Price Details", size="4"),
 
-                        rx.heading(
-                            "Select Payment Method",
-                            size="6",
-                            color="#111"
+                        rx.hstack(
+                            rx.text("Total Items Price"),
+                            rx.spacer(),
+                            rx.text(f"₹ {State.total_price}"),
+                            width="100%",
                         ),
 
-                        rx.button("Google Pay", width="100%", variant="outline"),
-                        rx.button("PhonePe", width="100%", variant="outline"),
-                        rx.button("Paytm", width="100%", variant="outline"),
+                        rx.hstack(
+                            rx.text("Delivery"),
+                            rx.spacer(),
+                            rx.text("FREE", color="green"),
+                            width="100%",
+                        ),
 
                         rx.divider(),
 
+                        rx.hstack(
+                            rx.text("Total Amount", weight="bold"),
+                            rx.spacer(),
+                            rx.text(f"₹ {State.total_price}", weight="bold"),
+                            width="100%",
+                        ),
+
+                        # -------- PAYMENT BUTTON --------
                         rx.button(
                             "Pay Now",
+                            color_scheme="blue",
                             width="100%",
-                            bg="#FFD814",
-                            color="black",
-                            _hover={"bg": "#F7CA00"},
-                            on_click=State.start_payment
+                            margin_top="1rem",
+                            on_click=State.start_payment,  # ✅ use State
                         ),
 
-                        spacing="4",
-                        width="100%"
-                    ),
+                        # -------- PAYMENT STATUS --------
+                        rx.cond(
+                            State.payment_step == "processing",
+                            rx.text("Processing payment...", color="orange"),
+                        ),
 
-                    background="white",
-                    padding="25px",
-                    border_radius="12px",
-                    width="50%",
-                    box_shadow="0 2px 8px rgba(0,0,0,0.1)"
+                        rx.cond(
+                            State.payment_step == "success",
+                            rx.text("✅ Payment Successful!", color="green"),
+                        ),
+
+                        width="100%",
+                    ),
+                    padding="2rem",
+                    max_width="400px",
+                    width="100%",
                 ),
 
-                # 🧾 RIGHT SIDE - ORDER SUMMARY
-                rx.box(
-
-                    rx.vstack(
-
-                        rx.heading(
-                            "Order Summary",
-                            size="6",
-                            color="#111"
-                        ),
-
-                        rx.hstack(
-                            rx.text("Items", color="#333"),
-                            rx.spacer(),
-                            rx.text(State.cart.length(), color="#333")
-                        ),
-
-                        rx.hstack(
-                            rx.text("Total Amount", color="#333"),
-                            rx.spacer(),
-                            rx.text(
-                                f"₹{State.total_price}",
-                                font_weight="bold",
-                                color="#B12704",
-                                font_size="18px"
-                            )
-                        ),
-
-                        rx.divider(),
-
-                        rx.text(
-                            "Secure payment powered by UPI",
-                            font_size="12px",
-                            color="gray"
-                        ),
-
-                        spacing="4",
-                        width="100%"
-                    ),
-
-                    background="white",
-                    padding="25px",
-                    border_radius="12px",
-                    width="40%",
-                    box_shadow="0 2px 8px rgba(0,0,0,0.1)"
-                ),
-
-                spacing="8",
-                width="100%"
+                align_items="center",
+                width="100%",
             ),
-
-            background="#f3f4f6",
-            padding="40px",
-            min_height="100vh"
+            size="3",
         ),
 
-        # 🔹 PAYMENT POPUP
-        rx.cond(
-            State.payment_step != "",
-
-            rx.box(
-
-                rx.vstack(
-
-                    rx.heading(
-                        "Payment Status",
-                        size="5",
-                        color="#111"
-                    ),
-
-                    # ⏳ PROCESSING
-                    rx.cond(
-                        State.payment_step == "processing",
-                        rx.vstack(
-                            rx.spinner(size="3"),
-                            rx.text("Processing payment...", color="#333")
-                        )
-                    ),
-
-                    # ✅ SUCCESS
-                    rx.cond(
-                        State.payment_step == "success",
-                        rx.vstack(
-                            rx.text(
-                                "Payment Successful",
-                                font_size="18px",
-                                color="green",
-                                font_weight="bold"
-                            ),
-
-                            rx.button(
-                                "Go to Home",
-                                on_click=lambda: [
-                                    State.reset_payment(),
-                                    rx.redirect("/home")
-                                ],
-                                bg="#2563eb",
-                                color="white",
-                                width="100%"
-                            )
-                        )
-                    ),
-
-                    spacing="5",
-                    align="center"
-                ),
-
-                position="fixed",
-                top="50%",
-                left="50%",
-                transform="translate(-50%, -50%)",
-                background="white",
-                padding="35px",
-                border_radius="14px",
-                box_shadow="0 10px 40px rgba(0,0,0,0.25)",
-                width="350px"
-            )
-        ),
-
-        # 🔻 FOOTER
-        footer()
+        background_color="#f5f5f5",
+        min_height="100vh",
     )

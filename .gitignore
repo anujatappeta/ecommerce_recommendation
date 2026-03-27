@@ -5,4 +5,4 @@ assets/external/
 *.py[cod]
 *.db
 .env
-
+venv/

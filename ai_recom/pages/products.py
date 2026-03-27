@@ -5,7 +5,6 @@ from ai_recom.components.navbar import navbar
 from ai_recom.components.footer import footer
 
 
-# @rx.page(route="/products", on_load=State.load_home_products)
 def products_page():
 
     return rx.box(
@@ -13,12 +12,12 @@ def products_page():
         # 🔹 NAVBAR
         navbar(),
 
-        # 🔹 MAIN CONTENT (AMAZON STYLE)
+        # 🔹 MAIN CONTENT
         rx.box(
 
             rx.vstack(
 
-                # 🔍 SEARCH BAR (BETTER UI)
+                # 🔍 SEARCH BAR
                 rx.hstack(
                     rx.input(
                         placeholder="Search for products...",
@@ -40,19 +39,31 @@ def products_page():
                     spacing="2"
                 ),
 
-                # 🛍️ PRODUCT GRID (IMPROVED)
-                rx.grid(
-                    rx.foreach(State.products, product_card),
-                    columns="repeat(5, 1fr)",   # ✅ AMAZON STYLE GRID
-                    gap="20px",
-                    width="100%"
+                # ✅ LOAD BUTTON (IMPORTANT FIX)
+                rx.button(
+                    "Load Products",
+                    on_click=State.load_home_products,
+                    bg="green",
+                    color="white"
+                ),
+
+                # 🛍️ PRODUCT GRID
+                rx.cond(
+                    State.products,  # if products exist
+                    rx.grid(
+                        rx.foreach(State.products, product_card),
+                        columns="repeat(5, 1fr)",
+                        gap="20px",
+                        width="100%"
+                    ),
+                    rx.text("Click 'Load Products' to view items")
                 ),
 
                 spacing="6",
                 width="100%"
             ),
 
-            background="#eaeded",   # ✅ AMAZON BACKGROUND
+            background="#eaeded",
             padding="20px",
             min_height="100vh"
         ),

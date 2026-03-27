@@ -6,7 +6,6 @@ from ai_recom.components.product_card import product_card
 from ai_recom.state import State
 
 
-#@rx.page(route="/recommendations", on_load=State.get_recommendations)
 def recommendations_page():
 
     return rx.box(
@@ -19,30 +18,32 @@ def recommendations_page():
 
             rx.vstack(
 
-                # 🧠 TITLE + SUBTEXT
-                rx.vstack(
+                # 🧠 TITLE
+                rx.heading(
+                    "Recommended For You",
+                    size="7",
+                    color="#0F1111"
+                ),
 
-                    rx.heading(
-                        "Recommended For You",
-                        size="7",
-                        color="#0F1111"
+                # 🧠 DYNAMIC MESSAGE
+                rx.cond(
+                    State.user_type == "new",
+                    rx.text(
+                        "Top rated products for you ⭐ (Cold Start)",
+                        color="gray"
                     ),
+                    rx.text(
+                        "Personalized recommendations (Hybrid: Content + Collaborative) 🎯",
+                        color="gray"
+                    )
+                ),
 
-                    rx.cond(
-                        State.user_type == "new",
-                        rx.text(
-                            "Top rated products ⭐",
-                            color="gray"
-                        ),
-                        rx.text(
-                            "Personalized recommendations based on your activity 🎯",
-                            color="gray"
-                        )
-                    ),
-
-                    align="start",
-                    spacing="1",
-                    width="100%"
+                # ✅ BUTTON (IMPORTANT)
+                rx.button(
+                    "Get Recommendations",
+                    on_click=State.get_recommendations,
+                    bg="blue",
+                    color="white"
                 ),
 
                 # 🛍️ PRODUCT GRID
@@ -51,14 +52,14 @@ def recommendations_page():
 
                     rx.grid(
                         rx.foreach(State.recommended_products, product_card),
-                        columns="repeat(5, 1fr)",   # ✅ AMAZON GRID
+                        columns="repeat(5, 1fr)",
                         gap="20px",
                         width="100%"
                     ),
 
                     rx.center(
                         rx.text(
-                            "No recommendations available",
+                            "Click 'Get Recommendations' to see results",
                             color="gray"
                         ),
                         padding="40px"
@@ -69,7 +70,7 @@ def recommendations_page():
                 width="100%"
             ),
 
-            background="#eaeded",   # ✅ AMAZON BACKGROUND
+            background="#eaeded",
             padding="20px",
             min_height="100vh"
         ),

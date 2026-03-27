@@ -4,12 +4,13 @@ from ai_recom.components.navbar import navbar
 from ai_recom.components.footer import footer
 
 
-# 🛒 SINGLE ITEM
+# SINGLE CART ITEM
 def cart_item(product):
     return rx.box(
 
         rx.hstack(
-            # 🖼️ IMAGE
+
+            # IMAGE
             rx.image(
                 src=product.get("ImageURL", "/no_image.png"),
                 height="80px",
@@ -18,8 +19,9 @@ def cart_item(product):
                 border_radius="8px",
             ),
 
-            # 📦 DETAILS
+            # DETAILS
             rx.vstack(
+
                 rx.text(
                     product.get("Name", "No Name"),
                     font_weight="bold",
@@ -33,7 +35,34 @@ def cart_item(product):
                     font_weight="bold",
                 ),
 
-                # ✅ AMAZON STYLE ACTIONS
+                # QUANTITY CONTROLS
+                rx.hstack(
+
+                    rx.button(
+                        "-",
+                        on_click=lambda: State.remove_from_cart(
+                            product.get("ProductID")
+                        ),
+                        size="2"
+                    ),
+
+                    rx.text(
+                        f"{product.get('quantity', 1)}",
+                        font_weight="bold",
+                        font_size="16px"
+                    ),
+
+                    rx.button(
+                        "+",
+                        on_click=lambda: State.add_to_cart(product),
+                        size="2"
+                    ),
+
+                    spacing="3",
+                    align="center"
+                ),
+
+                # ACTIONS
                 rx.hstack(
                     rx.text(
                         "Delete",
@@ -75,29 +104,32 @@ def cart_item(product):
     )
 
 
-# 🛍️ CART PAGE
-#@rx.page(route="/cart")
+# CART PAGE
 def cart_page():
 
     return rx.box(
 
-        # 🔝 NAVBAR
+        # NAVBAR
         navbar(),
 
         rx.box(
+
             rx.hstack(
 
-                # 🛒 LEFT SIDE
+                # LEFT SIDE (CART ITEMS)
                 rx.box(
                     rx.vstack(
+
                         rx.heading("Your Cart", size="7", color="#111"),
 
                         rx.cond(
                             State.cart,
+
                             rx.vstack(
                                 rx.foreach(State.cart, cart_item),
                                 spacing="4",
                             ),
+
                             rx.text("Your cart is empty", color="gray"),
                         ),
 
@@ -107,9 +139,10 @@ def cart_page():
                     padding="20px",
                 ),
 
-                # 💳 RIGHT SIDE
+                # RIGHT SIDE (SUMMARY)
                 rx.box(
                     rx.vstack(
+
                         rx.heading("Order Summary", size="6", color="#111"),
 
                         rx.hstack(
@@ -133,6 +166,7 @@ def cart_page():
 
                         spacing="4",
                     ),
+
                     width="30%",
                     padding="20px",
                     background="white",
@@ -147,7 +181,6 @@ def cart_page():
             flex="1",
         ),
 
-        # 🔻 FOOTER
         footer(),
 
         display="flex",

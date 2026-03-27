@@ -2,7 +2,6 @@ import reflex as rx
 from ai_recom.state import State
 
 
-#@rx.page(route="/", on_load=State.reset_password_toggle)
 def login_page():
     return rx.center(
 
@@ -10,7 +9,7 @@ def login_page():
 
             rx.vstack(
 
-                # 🛍️ TITLE
+                # TITLE
                 rx.text(
                     "🛒 AI Shop",
                     font_size="32px",
@@ -26,7 +25,7 @@ def login_page():
 
                 rx.divider(),
 
-                # 📧 EMAIL
+                # EMAIL
                 rx.vstack(
                     rx.text("Email", font_weight="bold", color="#111"),
 
@@ -34,14 +33,11 @@ def login_page():
                         placeholder="Enter your email",
                         value=State.email,
                         on_change=State.set_email,
-
                         width="100%",
                         height="50px",
                         font_size="15px",
-
                         color="black",
                         bg="white",
-
                         border="1px solid #ccc",
                         border_radius="12px",
                         padding="0 14px"
@@ -51,57 +47,30 @@ def login_page():
                     width="100%"
                 ),
 
-                # 🔐 PASSWORD (FINAL FIX)
+                # PASSWORD (FINAL FIXED)
                 rx.vstack(
                     rx.text("Password", font_weight="bold", color="#111"),
 
                     rx.hstack(
 
-                        # 🔥 FIXED INPUT SWITCH
-                        rx.cond(
+                        rx.input(
+                            placeholder="Enter your password",
+                            type=rx.cond(State.show_password, "text", "password"),
+                            value=State.password,
+                            on_change=State.set_password,
 
-                            State.show_password,
+                            width="100%",
+                            height="50px",
+                            font_size="15px",
 
-                            # 👁️ SHOW PASSWORD
-                            rx.input(
-                                type_="text",
-                                placeholder="Enter your password",
-                                value=State.password,
-                                on_change=State.set_password,
+                            color="black",
+                            bg="white",
 
-                                width="100%",
-                                height="50px",
-                                font_size="15px",
-
-                                color="black",
-                                bg="white",
-
-                                border="1px solid #ccc",
-                                border_radius="12px",
-                                padding="0 14px"
-                            ),
-
-                            # 🔒 HIDE PASSWORD
-                            rx.input(
-                                type_="password",
-                                placeholder="Enter your password",
-                                value=State.password,
-                                on_change=State.set_password,
-
-                                width="100%",
-                                height="50px",
-                                font_size="15px",
-
-                                color="black",
-                                bg="white",
-
-                                border="1px solid #ccc",
-                                border_radius="12px",
-                                padding="0 14px"
-                            )
+                            border="1px solid #ccc",
+                            border_radius="12px",
+                            padding="0 14px"
                         ),
 
-                        # 👁️ ICON BUTTON
                         rx.button(
                             rx.icon(
                                 tag=rx.cond(
@@ -124,7 +93,7 @@ def login_page():
                     width="100%"
                 ),
 
-                # 🔘 LOGIN BUTTON
+                # LOGIN BUTTON
                 rx.button(
                     "Sign In",
                     width="100%",
@@ -143,7 +112,7 @@ def login_page():
                     on_click=State.login
                 ),
 
-                # ⚠️ MESSAGE
+                # MESSAGE
                 rx.cond(
                     State.message != "",
                     rx.text(
@@ -154,7 +123,7 @@ def login_page():
                     )
                 ),
 
-                # 🔗 SIGNUP
+                # SIGNUP LINK
                 rx.hstack(
                     rx.text("New user?", color="#555"),
                     rx.text(
@@ -172,7 +141,6 @@ def login_page():
                 width="100%"
             ),
 
-            # 🎨 CARD
             padding="45px",
             bg="white",
             border_radius="22px",
@@ -180,7 +148,6 @@ def login_page():
             width="420px"
         ),
 
-        # 🌈 BACKGROUND
         bg="linear-gradient(135deg, #0f172a, #1e293b)",
         height="100vh"
     )
