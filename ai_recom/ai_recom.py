@@ -18,7 +18,7 @@ app = rx.App()
 # Signup
 app.add_page(signup_page, route="/signup")
 
-# Home (REMOVE on_load ❌)
+# Home 
 app.add_page(
     home,
     route="/home"
@@ -30,13 +30,13 @@ app.add_page(
     route="/"
 )
 
-# Products (REMOVE on_load ❌)
+# Products 
 app.add_page(
     products_page,
     route="/products"
 )
 
-# Recommendations (REMOVE on_load ❌)
+# Recommendations 
 app.add_page(
     recommendations_page,
     route="/recommendations"

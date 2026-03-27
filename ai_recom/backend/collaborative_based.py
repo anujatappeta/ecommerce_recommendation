@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 def get_collaborative_recommendations(user_id, top_n=10):
     try:
-        # 🔥 LOAD SMALL DATA ONLY
+        # LOAD SMALL DATA ONLY
         df = pd.read_csv("final_clean_data.csv").head(500)
 
         df.columns = df.columns.str.strip()

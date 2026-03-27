@@ -2,7 +2,6 @@ from ai_recom.backend.content_based import get_content_recommendations
 from ai_recom.backend.collaborative_based import get_collaborative_recommendations
 from ai_recom.backend.rating_based import get_top_rated
 
-
 def get_recommendations(user_id: int, product_id: int, top_n=10):
     try:
         # 🔹 NEW USER → TOP RATED
@@ -15,7 +14,7 @@ def get_recommendations(user_id: int, product_id: int, top_n=10):
         # 🔹 COLLABORATIVE
         collab_ids = get_collaborative_recommendations(user_id, top_n)
 
-        # 🔥 HYBRID COMBINATION
+        #  HYBRID COMBINATION
         combined = []
 
         # Priority: content first

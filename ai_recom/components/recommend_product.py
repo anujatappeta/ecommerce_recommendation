@@ -8,7 +8,7 @@ def recommend_product_card(product):
 
         rx.vstack(
 
-            # 🖼️ IMAGE
+            #  IMAGE
             rx.image(
                 src=rx.cond(
                     product.get("ImageURL", "") != "",
@@ -21,7 +21,7 @@ def recommend_product_card(product):
                 border_radius="8px"
             ),
 
-            # 📦 NAME
+            #  NAME
             rx.text(
                 product.get("Name", "No Name"),
                 font_weight="bold",
@@ -30,14 +30,14 @@ def recommend_product_card(product):
                 color="#111"
             ),
 
-            # 🏷️ BRAND
+            #  BRAND
             rx.text(
                 product.get("Brand", "Unknown"),
                 font_size="12px",
                 color="gray"
             ),
 
-            # ⭐ RATING
+            #  RATING
             rx.hstack(
                 rx.text("⭐"),
                 rx.text(product.get("Rating", "4.0")),
@@ -47,7 +47,7 @@ def recommend_product_card(product):
                 spacing="1"
             ),
 
-            # 💰 PRICE
+            #  PRICE
             rx.text(
                 f"₹ {product.get('Price', 'N/A')}",
                 color="green",
@@ -55,10 +55,10 @@ def recommend_product_card(product):
                 font_size="15px"
             ),
 
-            # 🔘 BUTTONS
+            # BUTTONS
             rx.hstack(
 
-                # 🛒 ADD TO CART
+                #  ADD TO CART
                 rx.button(
                     "Add",
                     size="2",
@@ -66,13 +66,13 @@ def recommend_product_card(product):
                     on_click=lambda: State.add_to_cart(product)
                 ),
 
-                # 👁️ VIEW (FIXED HERE)
+              
                 rx.button(
                     "View",
                     size="2",
                     variant="outline",
                     on_click=lambda: State.set_last_viewed(
-                        product.get("ProductID")   # ✅ FIX (NO int)
+                        product.get("ProductID")   
                     )
                 ),
 
@@ -85,7 +85,7 @@ def recommend_product_card(product):
             width="100%"
         ),
 
-        # 🎨 CARD STYLE (IMPROVED)
+        # CARD STYLE (IMPROVED)
         border="1px solid #e5e7eb",
         border_radius="12px",
         padding="12px",

@@ -2,7 +2,6 @@ import reflex as rx
 from typing import List, Dict
 from ai_recom.backend.chatbot import get_chatbot_response
 
-
 class ChatState(rx.State):
     user_input: str = ""
     messages: List[Dict] = []
@@ -18,20 +17,20 @@ class ChatState(rx.State):
         if self.user_input.strip() == "":
             return
 
-        # ✅ User message
+        #  User message
         self.messages.append({
             "type": "user",
             "text": self.user_input
         })
 
-        # 🔥 Get bot response
+        # Get bot response
         bot_reply = get_chatbot_response(self.user_input)
 
-        # ✅ FIX: ensure string
+        # FIX: ensure string
         if isinstance(bot_reply, dict):
             bot_reply = bot_reply.get("data", str(bot_reply))
 
-        # ✅ Bot message
+        # Bot message
         self.messages.append({
             "type": "bot",
             "text": str(bot_reply)
@@ -43,7 +42,7 @@ class ChatState(rx.State):
 def chatbot():
     return rx.box(
 
-        # 🔥 CHAT WINDOW
+        #  CHAT WINDOW
         rx.cond(
             ChatState.is_open,
 
@@ -63,7 +62,7 @@ def chatbot():
                         width="100%"
                     ),
 
-                    # 🔹 Messages (✅ FIXED HERE)
+                    # 🔹 Messages 
                     rx.box(
                         rx.vstack(
                             rx.foreach(
@@ -71,7 +70,7 @@ def chatbot():
                                 lambda msg: rx.box(
 
                                     rx.text(
-                                        msg["text"],   # ✅ FIXED (NO .get)
+                                        msg["text"],  
                                         font_size="16px"
                                     ),
 
@@ -140,7 +139,7 @@ def chatbot():
             ),
         ),
 
-        # 🔥 Floating Button
+        #  Floating Button
         rx.button(
             "💬",
             on_click=ChatState.toggle_chat,

@@ -3,7 +3,7 @@ import pandas as pd
 
 def recommend_top_rated(top_n=20, min_reviews=5):
     try:
-        # 🔥 LOAD ONLY WHEN FUNCTION CALLED
+        #  LOAD ONLY WHEN FUNCTION CALLED
         df = pd.read_csv("final_clean_data.csv")
 
         # Basic cleaning
@@ -24,7 +24,7 @@ def recommend_top_rated(top_n=20, min_reviews=5):
             df["ReviewCount"], errors="coerce"
         ).fillna(0)
 
-        # 🔥 GROUP
+        # GROUP
         product_stats = (
             df.groupby("ProductID")
             .agg({
@@ -34,7 +34,7 @@ def recommend_top_rated(top_n=20, min_reviews=5):
             .reset_index()
         )
 
-        # 🔥 FILTER
+        #  FILTER
         filtered = product_stats[
             product_stats["ReviewCount"] >= min_reviews
         ]
@@ -42,7 +42,7 @@ def recommend_top_rated(top_n=20, min_reviews=5):
         if filtered.empty:
             filtered = product_stats
 
-        # 🔥 SORT
+        #  SORT
         top_products = filtered.sort_values(
             by=["Rating", "ReviewCount"],
             ascending=False
@@ -53,7 +53,6 @@ def recommend_top_rated(top_n=20, min_reviews=5):
     except Exception as e:
         print("Rating error:", e)
         return []
-
 
 def get_top_rated(top_n=20):
     return recommend_top_rated(top_n)

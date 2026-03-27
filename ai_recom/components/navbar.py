@@ -5,7 +5,7 @@ from ai_recom.state import State
 def navbar():
     return rx.hstack(
 
-        # 🛒 LOGO
+        #  LOGO
         rx.text(
             "🛒 AI Shop",
             font_size="22px",
@@ -15,7 +15,7 @@ def navbar():
             on_click=rx.redirect("/home")
         ),
 
-        # 🔍 SEARCH BAR
+        #  SEARCH BAR
         rx.hstack(
             rx.input(
                 placeholder="Search products...",
@@ -46,7 +46,7 @@ def navbar():
 
         rx.spacer(),
 
-        # 🔗 NAV LINKS
+        #  NAV LINKS
         rx.hstack(
 
             rx.text("Home", cursor="pointer", color="white", on_click=rx.redirect("/home")),
@@ -75,11 +75,11 @@ def navbar():
             align="center"
         ),
 
-        # 👤 USER SECTION
+        #  USER SECTION
         rx.cond(
             State.user_id != 0,
 
-            # ✅ DROPDOWN
+            # DROPDOWN
             rx.menu.root(
 
                 rx.menu.trigger(
@@ -106,7 +106,7 @@ def navbar():
                 )
             ),
 
-            # ❌ NOT LOGGED IN
+            #  NOT LOGGED IN
             rx.hstack(
                 rx.button("Login", on_click=rx.redirect("/")),
                 rx.button("Signup", on_click=rx.redirect("/signup")),
@@ -114,7 +114,7 @@ def navbar():
             )
         ),
 
-        # 🎨 STYLE
+        # STYLE
         justify="between",
         align="center",
         padding="12px 24px",

@@ -8,7 +8,7 @@ def product_card(product):
 
         rx.vstack(
 
-            # ❤️ Wishlist
+            # Wishlist
             rx.hstack(
                 rx.spacer(),
 
@@ -33,7 +33,7 @@ def product_card(product):
                 width="100%"
             ),
 
-            # 🖼️ Image
+            # Image
             rx.image(
                 src=rx.cond(
                     product.get("ImageURL", "") != "",
@@ -45,26 +45,26 @@ def product_card(product):
                 object_fit="contain"
             ),
 
-            # 📦 Name
+            #  Name
             rx.text(
                 product.get("Name", "No Name"),
                 font_size="14px",
                 no_of_lines=2
             ),
 
-            # ⭐ Rating
+            #  Rating
             rx.hstack(
                 rx.text("⭐"),
                 rx.text(product.get("Rating", "4.0")),
             ),
 
-            # 💰 Price
+            #  Price
             rx.text(
                 f"₹{product.get('Price', 'N/A')}",
                 font_weight="bold"
             ),
 
-            # 🔘 Buttons
+            #  Buttons
             rx.vstack(
 
                 # 🛒 Add to Cart
@@ -74,7 +74,6 @@ def product_card(product):
                     on_click=lambda: State.add_to_cart(product)
                 ),
 
-                # ✅ FIXED VIEW DETAILS
                 rx.button(
                     "View Details",
                     width="100%",

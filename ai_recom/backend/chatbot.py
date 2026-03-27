@@ -22,28 +22,28 @@ def get_chatbot_response(user_input: str, user_id: int = 0):
     try:
         query = user_input.lower()
 
-        # 🛍️ PRODUCT KEYWORDS
+        #  PRODUCT KEYWORDS
         product_keywords = [
             "soap", "shampoo", "lotion", "cream",
             "face wash", "perfume", "cosmetics"
         ]
 
-        # 🔥 PRODUCT INTENT
+        #  PRODUCT INTENT
         if any(word in query for word in product_keywords):
 
             print("🛒 Product intent detected")
 
             try:
-                # ✅ STEP 1: get product IDs
+                # STEP 1: get product IDs
                 ids = get_recommendations(user_id, query, top_n=20)
 
-                # ✅ STEP 2: load dataset
+                #  STEP 2: load dataset
                 df = pd.read_csv("final_clean_data.csv")
 
-                # ✅ STEP 3: filter products by IDs
+                # STEP 3: filter products by IDs
                 products = df[df["ProductID"].isin(ids)]
 
-                # ✅ STEP 4: convert to dict
+                #  STEP 4: convert to dict
                 products = products.to_dict("records")
 
             except Exception as e:
@@ -53,7 +53,7 @@ def get_chatbot_response(user_input: str, user_id: int = 0):
                     "data": "Error loading products"
                 }
 
-            # 🔍 FILTER BASED ON USER QUERY
+            #  FILTER BASED ON USER QUERY
             keywords = query.split()
 
             filtered = [
@@ -72,7 +72,7 @@ def get_chatbot_response(user_input: str, user_id: int = 0):
                 "data": "Here are some products:\n\n" + "\n".join(product_names)
             }
 
-        # 💬 NORMAL CHAT → LLM
+        #  NORMAL CHAT → LLM
         try:
             chat = client.chat.completions.create(
                 messages=[

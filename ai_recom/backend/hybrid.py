@@ -2,17 +2,14 @@ import pandas as pd
 
 from ai_recom.backend.content_based import get_content_recommendations
 from ai_recom.backend.collaborative_based import get_collaborative_recommendations
-
-
-# -------------------------
 # HYBRID FUNCTION
-# -------------------------
+
 def get_hybrid_recommendations(user_id, product_id, top_n=10):
     try:
-        # 🔥 Get content-based recommendations
+        #  Get content-based recommendations
         content_ids = get_content_recommendations(product_id, top_n)
 
-        # 🔥 Get collaborative recommendations
+        #  Get collaborative recommendations
         collab_ids = get_collaborative_recommendations(user_id, top_n)
 
         # -------------------------

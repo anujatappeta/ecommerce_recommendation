@@ -1,16 +1,13 @@
 import pandas as pd
 
-
 def load_data(file_path):
     return pd.read_csv(file_path)
-
 
 def inspect_data(df):
     print("Initial DataFrame shape:", df.shape)
     print("\nDataFrame info:")
     print(df.info())
     print("\nDataFrame head:\n", df.head())
-
 
 def clean_data(df, min_user_interactions=3, min_product_interactions=3):
 
@@ -47,7 +44,6 @@ def clean_data(df, min_user_interactions=3, min_product_interactions=3):
     df["Description"] = df["Description"].fillna("")
     df["Tags"] = df["Tags"].fillna("")
 
-    # 🔥 IMAGE FIX (IMPORTANT)
     if 'ImageURL' in df.columns:
         df['ImageURL'] = df['ImageURL'].fillna("").astype(str)
         df['ImageURL'] = df['ImageURL'].str.split('|').str[0].str.strip()
@@ -65,7 +61,7 @@ def clean_data(df, min_user_interactions=3, min_product_interactions=3):
     df["Name"] = df["Name"].str.lower().str.replace(r"[^\w\s]", "", regex=True).str.strip()
     df["Description"] = df["Description"].str.lower().str.replace(r"[^\w\s]", "", regex=True).str.strip()
 
-    # 🔥 FILTER LOOP
+    # FILTER LOOP
     while True:
         user_counts = df["UserID"].value_counts()
         product_counts = df["ProductID"].value_counts()

@@ -1,14 +1,9 @@
 import sqlite3
-
-# -------------------------
-# 🔹 CONNECT DATABASE
-# -------------------------
+#  CONNECT DATABASE
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cursor = conn.cursor()
+#  CREATE TABLE
 
-# -------------------------
-# 🔹 CREATE TABLE
-# -------------------------
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
     email TEXT PRIMARY KEY,
@@ -20,10 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 conn.commit()
 
+#CREATE USER
 
-# -------------------------
-# 🔹 CREATE USER
-# -------------------------
 def create_user(email, password, user_id, user_type="new"):
     try:
         cursor.execute(
@@ -35,10 +28,8 @@ def create_user(email, password, user_id, user_type="new"):
     except sqlite3.IntegrityError:
         return False
 
+# GET USER
 
-# -------------------------
-# 🔹 GET USER
-# -------------------------
 def get_user(email):
     cursor.execute(
         "SELECT email, password, user_id, user_type FROM users WHERE email = ?",
@@ -46,10 +37,7 @@ def get_user(email):
     )
     return cursor.fetchone()
 
-
-# -------------------------
-# 🔹 GET NEXT USER ID
-# -------------------------
+#  GET NEXT USER ID
 def get_next_user_id():
     cursor.execute("SELECT MAX(user_id) FROM users")
     result = cursor.fetchone()[0]
@@ -58,10 +46,7 @@ def get_next_user_id():
         return 100   # start from 100
     return result + 1
 
-
-# -------------------------
-# 🔹 UPDATE USER TYPE (IMPORTANT)
-# -------------------------
+#UPDATE USER TYPE 
 def update_user_type(email, user_type):
     cursor.execute(
         "UPDATE users SET user_type = ? WHERE email = ?",

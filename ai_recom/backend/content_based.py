@@ -2,10 +2,9 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-
 def get_content_recommendations(product_id, top_n=10):
     try:
-        # 🔥 LOAD SMALL DATA ONLY
+        #  LOAD SMALL DATA ONLY
         df = pd.read_csv("final_clean_data.csv").head(300)
 
         df.columns = df.columns.str.strip()
@@ -38,7 +37,7 @@ def get_content_recommendations(product_id, top_n=10):
         # -------------------------
         tfidf = TfidfVectorizer(
             stop_words="english",
-            max_features=2000   # 🔥 LIMIT FEATURES
+            max_features=2000   #  LIMIT FEATURES
         )
 
         tfidf_matrix = tfidf.fit_transform(df["content"])

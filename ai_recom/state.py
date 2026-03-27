@@ -7,7 +7,6 @@ from ai_recom.db import create_user, get_user, get_next_user_id, update_user_typ
 from ai_recom.backend.rating_based import get_top_rated
 from ai_recom.backend.hybrid import get_hybrid_recommendations
 
-
 class State(rx.State):
 
     # ---------- USER ----------
