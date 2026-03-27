@@ -1,7 +1,7 @@
 # 🛍️ AI-Powered E-Commerce Recommendation System
 
 An intelligent e-commerce web application built using **Reflex (Python)** that provides **personalized product recommendations** using multiple recommendation techniques.
-
+> 📌 Developed as part of Infosys Springboard Virtual Internship 6.0
 ---
 
 ## 🚀 Features
