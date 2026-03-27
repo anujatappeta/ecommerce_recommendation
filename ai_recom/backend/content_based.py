@@ -14,10 +14,7 @@ def get_content_recommendations(product_id, top_n=10):
 
         if df.empty:
             return []
-
-        # -------------------------
         # CLEAN
-        # -------------------------
         df["Tags"] = df.get("Tags", "").fillna("").astype(str)
         df["Description"] = df.get("Description", "").fillna("").astype(str)
         df["Category"] = df.get("Category", "").fillna("").astype(str)
@@ -32,9 +29,7 @@ def get_content_recommendations(product_id, top_n=10):
             df["Description"]
         )
 
-        # -------------------------
         # TF-IDF (LIGHT)
-        # -------------------------
         tfidf = TfidfVectorizer(
             stop_words="english",
             max_features=2000   #  LIMIT FEATURES
@@ -43,10 +38,7 @@ def get_content_recommendations(product_id, top_n=10):
         tfidf_matrix = tfidf.fit_transform(df["content"])
 
         similarity_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
-
-        # -------------------------
         # FIND PRODUCT
-        # -------------------------
         match = df[df["ProductID"] == product_id]
 
         if match.empty:
